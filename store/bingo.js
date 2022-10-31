@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { database } from "../pages/api/firebase";
+import { ref, get } from "firebase/database";
+import { sendWin } from "../pages/api/firebase";
 
 const Bingo = React.createContext({
+  name: null,
   selected: [[], [], [], [], []],
   win: false,
+  currentGame: null,
   select: (cell) => {},
+  setName: (name) => {},
 });
 
 const initializeSelected = () => {
@@ -65,20 +71,42 @@ const checkSelected = (selected) => {
 };
 
 export function BingoProvider(props) {
+  const [currentGame, setCurrentGame] = useState(null);
   const [win, setWin] = useState(false);
+  const [name, setName] = useState(null);
   const selected = initializeSelected();
 
-  const select = (cell) => {
+  useEffect(() => {
+    const dbRef = ref(database, "bingo/games");
+    get(dbRef).then((snapshot) => {
+      const data = snapshot.val();
+      setCurrentGame(data.current);
+    });
+    const name = localStorage.getItem("name");
+    if (name) {
+        setName(name);
+    }
+  }, []);
+
+  const selectHandler = (cell) => {
     selected[cell.row - 1][cell.column - 1] = true;
     if (checkSelected(selected)) {
       setWin(true);
+      sendWin(name, currentGame);
     }
+  };
+
+  const setNameHandler = (name) => {
+    setName(name);
   };
 
   const context = {
     selected,
-    select,
+    select: selectHandler,
     win,
+    name,
+    currentGame,
+    setName: setNameHandler,
   };
 
   return <Bingo.Provider value={context}>{props.children}</Bingo.Provider>;

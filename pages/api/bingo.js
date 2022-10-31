@@ -1,4 +1,4 @@
-const KEYWORDS = [
+export const KEYWORDS = [
   { id: 0, keyword: "Proste jak drut!" },
   { id: 1, keyword: "*wskazuje na publiczność środkowym palcem*" },
   { id: 2, keyword: "dyszenie w mikrofon" },

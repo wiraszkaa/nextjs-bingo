@@ -1,0 +1,14 @@
+.login {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.login h1 {
+    width: 100%;
+    text-align: center;
+}
+
+.login input {
+    margin-right: 10px;
+}

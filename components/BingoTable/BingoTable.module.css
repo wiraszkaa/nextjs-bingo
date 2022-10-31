@@ -12,9 +12,10 @@
     align-items: center;
     justify-content: center;
     width: 8vw;
-    aspect-ratio: 1;
+    min-height: 8vw;
     border: 1px solid white;
     cursor: pointer;
+    font-size: calc(7px + 0.5vw);
 }
 
 .cell:hover {
@@ -22,10 +23,30 @@
 }
 
 .active {
-    background: rgba(255, 0, 0, 0.307);
+    background: rgba(0, 255, 0, 0.2);
+}
+
+.selected {
+    background: rgba(255, 0, 0, 0.2);
 }
 
 .cell span {
     width: 90%;
     text-align: center;
+    word-wrap: break-word;
+}
+
+@media screen and (max-width: 1000px) {
+    .table {
+        width: 90vw;
+    }
+
+    .cell {
+        width: 18vw;
+        min-height: 10vw;
+    }
+
+    .cell span {
+        width: 95%;
+    }
 }
