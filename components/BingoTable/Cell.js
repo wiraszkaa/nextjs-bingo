@@ -13,8 +13,16 @@ const Cell = (props) => {
     const chatRef = ref(database, `bingo/correct/${props.keyword.id}`);
     return onValue(chatRef, (snapshot) => {
       const data = snapshot.val();
-      if (data) {
+      if (data === null) {
+        return;
+      }
+      if (data.valid) {
         setValid(true);
+      } else {
+        if (selected) {
+          setSelected(false);
+          setValid(false);
+        }
       }
     });
   }, []);

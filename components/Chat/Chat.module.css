@@ -6,20 +6,21 @@
   border-radius: 30px;
   border: 2px solid white;
   padding: 0 2rem;
-  margin: 0 2rem;
+  margin: 1rem 2rem;
+  max-width: 25vw;
 }
 
 .chat {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  max-height: 80vw;
+  max-height: 40vw;
   height: 100%;
   overflow: auto;
 }
 
 .chat ul {
   padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .validation {
@@ -34,10 +35,10 @@
 .validation h2 {
   width: 100%;
   text-align: center;
+  font-size: calc(15px + 1vw);
 }
 
 .validation button {
-  background: none;
   border: 1px solid white;
   border-radius: 5px;
   padding: 2px 15px;
@@ -54,10 +55,12 @@
 }
 
 .message h2 {
+  font-size: calc(10px + 0.5vw);
   margin: 5px 10px;
 }
 
 .message p {
+  font-size: calc(7px + 0.5vw);
   margin: 5px;
 }
 
@@ -77,4 +80,11 @@
   border: 1px solid rgb(108, 108, 108);
   border-radius: 10px;
   padding: 5px;
+}
+
+@media screen and (max-width: 1000px) {
+  .chat ul {
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+  }
 }

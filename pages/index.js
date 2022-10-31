@@ -1,18 +1,14 @@
 import Head from "next/head";
-import { useEffect, useState, useContext } from "react";
+import { useContext } from "react";
 import AdminPanel from "../components/AdminPanel/AdminPanel";
 import BingoTable from "../components/BingoTable/BingoTable";
 import Chat from "../components/Chat/Chat";
 import Login from "../components/Login/Login";
+import Start from "../components/Start/Start";
 import Bingo from "../store/bingo";
-import { getBingoTable } from "./api/bingo";
 
 export default function Home() {
   const bingoCtx = useContext(Bingo);
-  const [keywords, setKeywords] = useState([]);
-  useEffect(() => {
-    setKeywords(getBingoTable());
-  }, []);
 
   return (
     <>
@@ -23,16 +19,17 @@ export default function Home() {
       </Head>
       <main className="main">
         <h1>Jóźwiak Bingo</h1>
-        <p>Beta v0.1</p>
+        <p>Alpha v1.0</p>
         {bingoCtx.win && <div className="win">You win!</div>}
         {!bingoCtx.name && <Login />}
-        {bingoCtx.name && (
+        {bingoCtx.name && bingoCtx.currentGame < 0 && <Start />}
+        {bingoCtx.name && bingoCtx.currentGame >= 0 && (
           <div className="flex">
-            <BingoTable keywords={keywords} />
+            <BingoTable keywords={bingoCtx.keywords} />
             <Chat />
           </div>
         )}
-        {bingoCtx.name === "Jakub_Wiraszka_ADMIN" && <AdminPanel />}
+        {bingoCtx.name === process.env.NEXT_PUBLIC_ADMIN && <AdminPanel />}
       </main>
     </>
   );

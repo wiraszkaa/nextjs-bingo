@@ -1,0 +1,30 @@
+.counter {
+    display: flex;
+    align-items: flex-start;
+}
+
+.counter h1 {
+    border: 1px solid white;
+}
+
+.number {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.number span {
+    font-size: 2rem;
+    text-align: center;
+    width: 4rem;
+    height: 4rem;
+    border: 1px solid white;
+    padding-top: 0.5rem;
+    border-radius: 10px;
+}
+
+.break {
+    font-size: 4rem;
+    padding: 0 1rem;
+    margin: 0;
+}

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { database } from "../pages/api/firebase";
-import { ref, get } from "firebase/database";
+import { database, sendKeywords } from "../pages/api/firebase";
+import { ref, get, onValue } from "firebase/database";
 import { sendWin } from "../pages/api/firebase";
+import { getBingoTable } from "../pages/api/bingo";
 
 const Bingo = React.createContext({
   name: null,
+  keywords: [],
   selected: [[], [], [], [], []],
   win: false,
   currentGame: null,
@@ -74,19 +76,46 @@ export function BingoProvider(props) {
   const [currentGame, setCurrentGame] = useState(null);
   const [win, setWin] = useState(false);
   const [name, setName] = useState(null);
+  const [keywords, setKeywords] = useState([]);
   const selected = initializeSelected();
 
   useEffect(() => {
-    const dbRef = ref(database, "bingo/games");
-    get(dbRef).then((snapshot) => {
+    const dbRef = ref(database, "bingo/games/current");
+    onValue(dbRef, (snapshot) => {
       const data = snapshot.val();
-      setCurrentGame(data.current);
+      if (data === null) {
+        return;
+      }
+      setCurrentGame(data);
     });
     const name = localStorage.getItem("name");
     if (name) {
-        setName(name);
+      setName(name);
     }
   }, []);
+
+  useEffect(() => {
+    if (currentGame >= 0 && name) {
+      const dbRef = ref(database, `bingo/games/${currentGame}/${name}`);
+      get(dbRef).then((snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          setKeywords(data.keywords);
+          if (data.win) {
+            setWin(true);
+          }
+        } else {
+          setKeywords(getBingoTable());
+        }
+      });
+    }
+  }, [currentGame, name]);
+
+  useEffect(() => {
+    if (currentGame >= 0 && name && keywords.length > 0) {
+      sendKeywords(name, currentGame, keywords);
+    }
+  }, [keywords, currentGame, name]);
 
   const selectHandler = (cell) => {
     selected[cell.row - 1][cell.column - 1] = true;
@@ -105,6 +134,7 @@ export function BingoProvider(props) {
     select: selectHandler,
     win,
     name,
+    keywords,
     currentGame,
     setName: setNameHandler,
   };
