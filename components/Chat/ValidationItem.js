@@ -32,7 +32,7 @@ const ValidationItem = (props) => {
     if (valid) {
       setValid(true);
     }
-    sendValidationAnswer(props.keyword, bingoCtx.name, valid);
+    sendValidationAnswer(props.keyword, name, valid);
     setAnswered(true);
   };
 

@@ -4,6 +4,7 @@ import AdminPanel from "../components/AdminPanel/AdminPanel";
 import BingoTable from "../components/BingoTable/BingoTable";
 import Chat from "../components/Chat/Chat";
 import Login from "../components/Login/Login";
+import Ranking from "../components/Ranking/Ranking";
 import Start from "../components/Start/Start";
 import Bingo from "../store/bingo";
 
@@ -20,7 +21,11 @@ export default function Home() {
       <main className="main">
         <h1>Jóźwiak Bingo</h1>
         <p>Alpha v1.0</p>
-        {bingoCtx.win && <div className="win">You win!</div>}
+        {bingoCtx.win && (
+          <div className="win">
+            You win! <Ranking />
+          </div>
+        )}
         {!bingoCtx.name && <Login />}
         {bingoCtx.name && bingoCtx.currentGame < 0 && <Start />}
         {bingoCtx.name && bingoCtx.currentGame >= 0 && (
@@ -30,6 +35,7 @@ export default function Home() {
           </div>
         )}
         {bingoCtx.name === process.env.NEXT_PUBLIC_ADMIN && <AdminPanel />}
+        {!bingoCtx.win && <Ranking />}
       </main>
     </>
   );

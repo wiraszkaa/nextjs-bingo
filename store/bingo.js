@@ -7,10 +7,9 @@ import { getBingoTable } from "../pages/api/bingo";
 const Bingo = React.createContext({
   name: null,
   keywords: [],
-  selected: [[], [], [], [], []],
   win: false,
   currentGame: null,
-  select: (cell) => {},
+  select: (cell, type) => {},
   setName: (name) => {},
 });
 
@@ -18,7 +17,7 @@ const initializeSelected = () => {
   let selected = [[], [], [], [], []];
   for (let i = 0; i < 5; i++) {
     for (let j = 0; j < 5; j++) {
-      selected[i][j] = false;
+      selected[i][j] = 0;
     }
   }
   return selected;
@@ -26,7 +25,7 @@ const initializeSelected = () => {
 
 const checkRow = (selected, row) => {
   for (let i = 0; i < 5; i++) {
-    if (!selected[row][i]) {
+    if (selected[row][i] < 2) {
       return false;
     }
   }
@@ -35,7 +34,7 @@ const checkRow = (selected, row) => {
 
 const checkColumn = (selected, column) => {
   for (let i = 0; i < 5; i++) {
-    if (!selected[i][column]) {
+    if (selected[i][column] < 2) {
       return false;
     }
   }
@@ -44,7 +43,7 @@ const checkColumn = (selected, column) => {
 
 const checkDiagonal = (selected) => {
   for (let i = 0; i < 5; i++) {
-    if (!selected[i][i]) {
+    if (selected[i][i] < 2) {
       return false;
     }
   }
@@ -53,7 +52,7 @@ const checkDiagonal = (selected) => {
 
 const checkReverseDiagonal = (selected) => {
   for (let i = 0; i < 5; i++) {
-    if (!selected[i][4 - i]) {
+    if (selected[i][4 - i] < 2) {
       return false;
     }
   }
@@ -77,7 +76,7 @@ export function BingoProvider(props) {
   const [win, setWin] = useState(false);
   const [name, setName] = useState(null);
   const [keywords, setKeywords] = useState([]);
-  const selected = initializeSelected();
+  const [selected, setSelected] = useState(initializeSelected());
 
   useEffect(() => {
     const dbRef = ref(database, "bingo/current");
@@ -96,6 +95,11 @@ export function BingoProvider(props) {
 
   useEffect(() => {
     if (currentGame >= 0 && name) {
+      const localSelected = JSON.parse(localStorage.getItem("" + currentGame));
+      if (localSelected) {
+        setSelected(localSelected);
+      }
+
       const dbRef = ref(database, `bingo/games/${currentGame}/${name}`);
       get(dbRef).then((snapshot) => {
         const data = snapshot.val();
@@ -117,11 +121,15 @@ export function BingoProvider(props) {
     }
   }, [keywords, currentGame, name]);
 
-  const selectHandler = (cell) => {
-    selected[cell.row - 1][cell.column - 1] = true;
-    if (checkSelected(selected)) {
-      setWin(true);
-      sendWin(name, currentGame);
+  const selectHandler = (cell, type) => {
+    selected[cell.row - 1][cell.column - 1] = type;
+    if (type <= 1) {
+      localStorage.setItem(currentGame, JSON.stringify(selected));
+    } else {
+      if (checkSelected(selected) && !win) {
+        setWin(true);
+        sendWin(name, currentGame);
+      }
     }
   };
 
@@ -130,7 +138,6 @@ export function BingoProvider(props) {
   };
 
   const context = {
-    selected,
     select: selectHandler,
     win,
     name,

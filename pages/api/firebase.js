@@ -56,15 +56,15 @@ export const addMessage = (message) => {
 };
 
 export const sendWin = (name, currentGame) => {
-  const dbRef = ref(database, `bingo/wins/${currentGame}`);
-  get(dbRef).then((snapshot) => {
+  get(child(ref(database), `bingo/wins/${currentGame}`)).then((snapshot) => {
     const data = snapshot.val();
     if (data) {
-      set(child(dbRef, data.length), name);
+      set(ref(database, `bingo/wins/${currentGame}/${data.length}`), name);
     } else {
-      set(child(dbRef, 0), name);
+      set(ref(database, `bingo/wins/${currentGame}/0`), name);
     }
   });
+  set(ref(database, `bingo/games/${currentGame}/${name}/win`), true);
 };
 
 export const setCorrect = (id, valid) => {

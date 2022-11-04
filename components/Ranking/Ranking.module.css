@@ -3,4 +3,34 @@
   border: 2px solid white;
   padding: 0 2rem;
   margin: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ranking h1 {
+  font-size: calc(15px + 1vw);
+}
+
+.ranking h2 {
+    font-size: calc(10px + 1vw);
+}
+
+.ranking ul {
+  position: relative;
+  list-style: none;
+  counter-reset: my-awesome-counter;
+}
+
+.ranking li {
+  counter-increment: my-awesome-counter;
+}
+
+.ranking li::before {
+  position: absolute;
+  left: 0;
+  content: counter(my-awesome-counter);
+  font-weight: bold;
+  font-size: calc(20px + 1vw);
+  line-height: 1;
 }
