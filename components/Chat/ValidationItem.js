@@ -6,25 +6,27 @@ import styles from "./Chat.module.css";
 import { sendValidationAnswer } from "../../pages/api/firebase";
 
 const ValidationItem = (props) => {
+  const { id } = props.keyword;
   const [answered, setAnswered] = useState(false);
   const [valid, setValid] = useState(false);
   const bingoCtx = useContext(Bingo);
+  const { name } = bingoCtx;
 
   useEffect(() => {
-    const dbRef = ref(database, `bingo/answers/${props.keyword.id}`);
+    const dbRef = ref(database, `bingo/answers/${id}`);
     get(dbRef).then((snapshot) => {
       const data = snapshot.val();
       if (data) {
-        for (const name in data) {
-          if (name === bingoCtx.name) {
+        for (const key in data) {
+          if (key === name) {
             setAnswered(true);
-            setValid(data[name]);
+            setValid(data[key]);
             return;
           }
         }
       }
     });
-  }, []);
+  }, [id, name]);
 
   const validHandler = (valid) => {
     if (valid) {

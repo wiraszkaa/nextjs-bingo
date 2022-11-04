@@ -80,7 +80,7 @@ export function BingoProvider(props) {
   const selected = initializeSelected();
 
   useEffect(() => {
-    const dbRef = ref(database, "bingo/games/current");
+    const dbRef = ref(database, "bingo/current");
     onValue(dbRef, (snapshot) => {
       const data = snapshot.val();
       if (data === null) {

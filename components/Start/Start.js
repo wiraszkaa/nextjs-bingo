@@ -7,7 +7,7 @@ const Start = () => {
   const [time, setTime] = useState(0);
 
   useEffect(() => {
-    const dbRef = ref(database, "bingo/games/time");
+    const dbRef = ref(database, "bingo/time");
     get(dbRef).then((snapshot) => {
       const data = snapshot.val();
       if (data) {
@@ -15,6 +15,10 @@ const Start = () => {
       }
     });
   }, []);
+
+  if (time === 0) {
+    return <div className="centered">Loading...</div>;
+  }
 
   return (
     <div className="centered">

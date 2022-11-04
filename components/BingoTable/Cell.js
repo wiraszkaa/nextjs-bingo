@@ -5,12 +5,13 @@ import Bingo from "../../store/bingo";
 import styles from "./BingoTable.module.css";
 
 const Cell = (props) => {
+  const { id } = props.keyword;
   const [selected, setSelected] = useState(false);
   const [valid, setValid] = useState(false);
   const bingoCtx = useContext(Bingo);
 
   useEffect(() => {
-    const chatRef = ref(database, `bingo/correct/${props.keyword.id}`);
+    const chatRef = ref(database, `bingo/correct/${id}`);
     return onValue(chatRef, (snapshot) => {
       const data = snapshot.val();
       if (data === null) {
@@ -25,7 +26,7 @@ const Cell = (props) => {
         }
       }
     });
-  }, []);
+  }, [id]);
 
   const selectHandler = () => {
     setSelected(true);

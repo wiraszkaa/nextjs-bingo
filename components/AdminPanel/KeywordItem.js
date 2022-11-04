@@ -10,11 +10,12 @@ import {
 } from "../../pages/api/firebase";
 
 const KeywordItem = (props) => {
+  const { id } = props.keyword;
   const [valid, setValid] = useState(false);
   const [answers, setAnswers] = useState({ valid: 0, invalid: 0 });
 
   useEffect(() => {
-    const answersRef = ref(database, `bingo/answers/${props.keyword.id}`);
+    const answersRef = ref(database, `bingo/answers/${id}`);
     return onValue(answersRef, (snapshot) => {
       const data = snapshot.val();
       let valid = 0;
@@ -28,7 +29,7 @@ const KeywordItem = (props) => {
       }
       setAnswers({ valid, invalid });
     });
-  }, []);
+  }, [id]);
 
   const correctHandler = (valid) => {
     setCorrect(props.keyword.id, valid);
