@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useContext, useEffect } from "react";
-import { database } from "../../pages/api/firebase";
+import { database } from "../pages/api/firebase";
 import { ref, onValue } from "firebase/database";
 import AdminPanel from "../components/AdminPanel/AdminPanel";
 import BingoTable from "../components/BingoTable/BingoTable";
@@ -25,7 +25,7 @@ export default function Home({ ip }) {
         window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
       }
     });
-  }, []);
+  }, [ip]);
 
   return (
     <>
