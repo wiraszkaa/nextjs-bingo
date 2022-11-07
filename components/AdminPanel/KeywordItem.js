@@ -34,9 +34,7 @@ const KeywordItem = (props) => {
 
   useEffect(() => {
     if (seconds <= 0 && !valid) {
-      if (answers.valid === 0 && answers.invalid === 0) {
-        correctHandler(true);
-      } else if (answers.valid > answers.invalid) {
+      if (answers.valid > answers.invalid) {
         correctHandler(true);
       } else {
         correctHandler(false);

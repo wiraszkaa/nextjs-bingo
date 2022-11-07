@@ -21,8 +21,11 @@ export default function Home({ ip }) {
       if (!data) {
         return;
       }
-      if (data[ip]) {
-        window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+      for (const key in data) {
+        if (data[key] === ip) {
+          window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+          return;
+        }
       }
     });
   }, [ip]);
