@@ -1,5 +1,7 @@
 import Head from "next/head";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import { database } from "../../pages/api/firebase";
+import { ref, onValue } from "firebase/database";
 import AdminPanel from "../components/AdminPanel/AdminPanel";
 import BingoTable from "../components/BingoTable/BingoTable";
 import Chat from "../components/Chat/Chat";
@@ -11,6 +13,19 @@ import Bingo from "../store/bingo";
 export default function Home({ ip }) {
   const bingoCtx = useContext(Bingo);
   bingoCtx.setIp(ip);
+
+  useEffect(() => {
+    const bannedRef = ref(database, "bingo/ban");
+    return onValue(bannedRef, (snapshot) => {
+      const data = snapshot.val();
+      if (!data) {
+        return;
+      }
+      if (data[ip]) {
+        window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+      }
+    });
+  }, []);
 
   return (
     <>

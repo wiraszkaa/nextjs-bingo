@@ -37,7 +37,8 @@ export const addValidation = (keyword, name, ip) => {
     }
     const newValidationRef = push(dbRef);
     update(newValidationRef, {
-      ...keyword,
+      id: keyword.id,
+      keyword: keyword.keyword,
       name,
       ip,
     });
