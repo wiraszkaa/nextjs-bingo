@@ -11,15 +11,17 @@ const Cell = (props) => {
   const bingoCtx = useContext(Bingo);
 
   useEffect(() => {
-    const selected = JSON.parse(
+    const selectedData = JSON.parse(
       localStorage.getItem("" + bingoCtx.currentGame)
     );
-    if (selected) {
+    if (selectedData) {
       setSelected(
-        selected[props.keyword.row - 1][props.keyword.column - 1] > 0
+        selectedData[props.keyword.row - 1][props.keyword.column - 1] > 0
       );
     }
+  }, []);
 
+  useEffect(() => {
     const chatRef = ref(database, `bingo/correct/${id}`);
     return onValue(chatRef, (snapshot) => {
       const data = snapshot.val();
@@ -29,10 +31,9 @@ const Cell = (props) => {
       if (data.valid) {
         setValid(true);
       } else {
-        if (selected) {
-          setSelected(false);
-          setValid(false);
-        }
+        setSelected(false);
+        bingoCtx.select(props.keyword, 0);
+        setValid(false);
       }
     });
   }, [id]);

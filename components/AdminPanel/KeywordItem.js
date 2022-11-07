@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
+import useCountdown from "../../hooks/use-countdown";
 import { database } from "../../pages/api/firebase";
-import { KEYWORDS } from "../../pages/api/bingo";
 import { onValue, ref } from "firebase/database";
 import styles from "./AdminPanel.module.css";
 import {
@@ -13,6 +13,7 @@ const KeywordItem = (props) => {
   const { id } = props.keyword;
   const [valid, setValid] = useState(false);
   const [answers, setAnswers] = useState({ valid: 0, invalid: 0 });
+  const [days, hours, minutes, seconds] = useCountdown(props.keyword.time);
 
   useEffect(() => {
     const answersRef = ref(database, `bingo/answers/${id}`);
@@ -31,6 +32,18 @@ const KeywordItem = (props) => {
     });
   }, [id]);
 
+  useEffect(() => {
+    if (seconds <= 0 && !valid) {
+      if (answers.valid === 0 && answers.invalid === 0) {
+        correctHandler(true);
+      } else if (answers.valid > answers.invalid) {
+        correctHandler(true);
+      } else {
+        correctHandler(false);
+      }
+    }
+  }, [seconds]);
+
   const correctHandler = (valid) => {
     setCorrect(props.keyword.id, valid);
     if (!valid) {
@@ -45,6 +58,7 @@ const KeywordItem = (props) => {
     <div className={`${styles.keyword} ${valid ? styles.valid : ""}`}>
       <h1>{props.keyword.keyword}</h1>
       <p>{props.keyword.name}</p>
+      {seconds >= 0 && <p>{`${minutes}:${seconds}`}</p>}
       <button
         disabled={valid}
         onClick={() => correctHandler(true)}

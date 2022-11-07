@@ -41,6 +41,7 @@ export const addValidation = (keyword, name, ip) => {
       keyword: keyword.keyword,
       name,
       ip,
+      time: new Date().getTime() + 1000 * 60,
     });
   });
 };
