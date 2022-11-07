@@ -24,7 +24,7 @@ const app = initializeApp(firebaseConfig);
 
 export const database = getDatabase(app);
 
-export const addValidation = (keyword) => {
+export const addValidation = (keyword, name, ip) => {
   const dbRef = ref(database, "bingo/chat/validations");
   get(dbRef).then((snapshot) => {
     const data = snapshot.val();
@@ -38,6 +38,8 @@ export const addValidation = (keyword) => {
     const newValidationRef = push(dbRef);
     update(newValidationRef, {
       ...keyword,
+      name,
+      ip,
     });
   });
 };

@@ -44,7 +44,7 @@ const Cell = (props) => {
     } else {
       setSelected(true);
       bingoCtx.select(props.keyword, 1);
-      addValidation(props.keyword);
+      addValidation(props.keyword, bingoCtx.name, bingoCtx.ip);
     }
   };
 

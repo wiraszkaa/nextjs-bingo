@@ -8,22 +8,24 @@ import Ranking from "../components/Ranking/Ranking";
 import Start from "../components/Start/Start";
 import Bingo from "../store/bingo";
 
-export default function Home() {
+export default function Home({ ip }) {
   const bingoCtx = useContext(Bingo);
+  bingoCtx.setIp(ip);
 
   return (
     <>
       <Head>
-        <title>Ireneusz Jóźwiak Bingo</title>
+        <title>Bingo</title>
         <meta name="description" content="Świetna gra" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="main">
-        <h1>Jóźwiak Bingo</h1>
-        <p>Alpha v1.0</p>
+        <h1>Bingo</h1>
+        <p>Alpha v2.0</p>
         {bingoCtx.win && (
           <div className="win">
-            You win! <Ranking />
+            <h1>You win!</h1>
+            <Ranking />
           </div>
         )}
         {!bingoCtx.name && <Login />}
@@ -40,3 +42,8 @@ export default function Home() {
     </>
   );
 }
+
+Home.getInitialProps = async ({ req }) => {
+  const ip = req.headers["x-real-ip"] || req.connection.remoteAddress;
+  return { ip };
+};

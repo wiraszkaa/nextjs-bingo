@@ -1,14 +1,18 @@
 .login {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 2px solid white;
+  border-radius: 30px;
+  padding: 1rem;
+  margin: 1rem;
 }
 
 .login h1 {
-    width: 100%;
-    text-align: center;
+  width: 100%;
+  text-align: center;
 }
 
 .login input {
-    margin-right: 10px;
+  margin: 10px 0;
 }

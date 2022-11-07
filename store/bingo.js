@@ -6,11 +6,13 @@ import { getBingoTable } from "../pages/api/bingo";
 
 const Bingo = React.createContext({
   name: null,
+  ip: null,
   keywords: [],
   win: false,
   currentGame: null,
   select: (cell, type) => {},
   setName: (name) => {},
+  setIp: (ip) => {},
 });
 
 const initializeSelected = () => {
@@ -75,6 +77,7 @@ export function BingoProvider(props) {
   const [currentGame, setCurrentGame] = useState(null);
   const [win, setWin] = useState(false);
   const [name, setName] = useState(null);
+  const [ip, setIp] = useState(null);
   const [keywords, setKeywords] = useState([]);
   const [selected, setSelected] = useState(initializeSelected());
 
@@ -137,13 +140,19 @@ export function BingoProvider(props) {
     setName(name);
   };
 
+  const setIpHandler = (ip) => {
+    setIp(ip);
+  }
+
   const context = {
     select: selectHandler,
     win,
     name,
+    ip,
     keywords,
     currentGame,
     setName: setNameHandler,
+    setIp: setIpHandler
   };
 
   return <Bingo.Provider value={context}>{props.children}</Bingo.Provider>;

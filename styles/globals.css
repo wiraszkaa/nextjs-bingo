@@ -31,12 +31,19 @@ a {
   position: fixed;
   top: 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.8);
-  font-size: 10vw;
+  
+}
+
+.win h1 {
+  margin: 0;
+  margin-bottom: 1rem;
+  font-size: 7vw;
 }
 
 .flex {

@@ -44,6 +44,7 @@ const KeywordItem = (props) => {
   return (
     <div className={`${styles.keyword} ${valid ? styles.valid : ""}`}>
       <h1>{props.keyword.keyword}</h1>
+      <p>{props.keyword.name}</p>
       <button
         disabled={valid}
         onClick={() => correctHandler(true)}
